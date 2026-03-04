@@ -10,6 +10,12 @@ import {
 import type { Route } from "./+types/root";
 import "./app.css";
 
+// Initialize MSW in development
+if (typeof window !== "undefined" && import.meta.env.DEV) {
+  const { worker } = await import("./mocks/browser");
+  await worker.start();
+}
+
 export const links: Route.LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
   {

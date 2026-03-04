@@ -1,5 +1,5 @@
 import type { Route } from "./+types/home";
-import { Welcome } from "../welcome/welcome";
+import { useState, useEffect } from "react";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -9,5 +9,25 @@ export function meta({}: Route.MetaArgs) {
 }
 
 export default function Home() {
-  return <Welcome />;
+  const [message, setMessage] = useState<string>("");
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetch("/api/welcome")
+      .then((res) => res.json())
+      .then((data) => {
+        setMessage(data.message);
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.error("Error fetching welcome message:", error);
+        setLoading(false);
+      });
+  }, []);
+
+  return (
+    <div className="flex min-h-screen flex-col items-center justify-center gap-4">
+      <h1 className="text-4xl font-bold">{loading ? "Loading..." : message}</h1>
+    </div>
+  );
 }
