@@ -11,7 +11,7 @@ import type { Route } from "./+types/root";
 import "./app.css";
 
 // Initialize MSW in development
-if (typeof window !== "undefined" && import.meta.env.DEV) {
+if (typeof window !== "undefined" && import.meta.env.VITE_DEMO === "true") {
   const { worker } = await import("./mocks/browser");
   await worker.start();
 }
